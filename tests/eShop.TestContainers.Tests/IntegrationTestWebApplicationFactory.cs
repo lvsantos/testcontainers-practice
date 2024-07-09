@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Testcontainers.Elasticsearch;
+using Testcontainers.MongoDb;
 using Testcontainers.MsSql;
 using Testcontainers.Redis;
 
@@ -10,6 +11,7 @@ public abstract class IntegrationTestWebApplicationFactory : WebApplicationFacto
     protected readonly MsSqlContainer _dbContainer;
     protected readonly RedisContainer _cacheContainer;
     protected readonly ElasticsearchContainer _elasticSearchContainer;
+    protected readonly MongoDbContainer _mongoDbContainer;
 
     public IntegrationTestWebApplicationFactory()
     {
@@ -21,6 +23,8 @@ public abstract class IntegrationTestWebApplicationFactory : WebApplicationFacto
             .Build();
         _elasticSearchContainer = new ElasticsearchBuilder()
             .Build();
+        _mongoDbContainer = new MongoDbBuilder()
+            .Build();
     }
 
     public Task InitializeAsync()
@@ -29,7 +33,8 @@ public abstract class IntegrationTestWebApplicationFactory : WebApplicationFacto
         {
             _cacheContainer.StartAsync(),
             _dbContainer.StartAsync(),
-            _elasticSearchContainer.StartAsync()
+            _elasticSearchContainer.StartAsync(),
+            _mongoDbContainer.StartAsync()
         };
         return Task.WhenAll(tasks);
     }
@@ -39,7 +44,8 @@ public abstract class IntegrationTestWebApplicationFactory : WebApplicationFacto
         {
             _cacheContainer.DisposeAsync().AsTask(),
             _dbContainer.DisposeAsync().AsTask(),
-            _elasticSearchContainer.DisposeAsync().AsTask()
+            _elasticSearchContainer.DisposeAsync().AsTask(),
+            _mongoDbContainer.DisposeAsync().AsTask()
         };
         return Task.WhenAll(tasks);
     }

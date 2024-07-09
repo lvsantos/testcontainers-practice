@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,7 +14,9 @@
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.14.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.27.0" />
     <PackageReference Include="Testcontainers.Elasticsearch" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.MongoDb" Version="3.9.0" />
     <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
     <PackageReference Include="Testcontainers.Redis" Version="3.9.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
