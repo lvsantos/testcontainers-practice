@@ -4,10 +4,14 @@ namespace eShop.TestContainers.Tests;
 
 public class RedisContainerTest : IntegrationTestWebApplicationFactory
 {
+    public RedisContainerTest() : base(useCache: true)
+    {
+    }
+
     [Fact]
     public async Task WriteToRedisDatabase()
     {
-        var connectionString = _cacheContainer.GetConnectionString();
+        var connectionString = _cacheContainer!.GetConnectionString();
         var connection = ConnectionMultiplexer.Connect(connectionString);
         var db = connection.GetDatabase();
 

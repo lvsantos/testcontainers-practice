@@ -5,10 +5,14 @@ namespace eShop.TestContainers.Tests;
 
 public sealed class MongoContainerTest : IntegrationTestWebApplicationFactory
 {
+    public MongoContainerTest() : base(useMongo: true)
+    {
+    }
+
     [Fact]
     public async Task ReadFromMongoDbDatabase()
     {
-        var client = new MongoClient(_mongoDbContainer.GetConnectionString());
+        var client = new MongoClient(_mongoDbContainer!.GetConnectionString());
 
         using var databases = await client.ListDatabasesAsync();
 
@@ -17,7 +21,7 @@ public sealed class MongoContainerTest : IntegrationTestWebApplicationFactory
     [Fact]
     public async Task WriteToMongoDbDatabase()
     {
-        var client = new MongoClient(_mongoDbContainer.GetConnectionString());
+        var client = new MongoClient(_mongoDbContainer!.GetConnectionString());
         var database = client.GetDatabase("test");
         var collection = database.GetCollection<BsonDocument>("test");
 

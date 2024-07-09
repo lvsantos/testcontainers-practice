@@ -4,10 +4,14 @@ namespace eShop.TestContainers.Tests;
 
 public class MsSqlServerContainerTest : IntegrationTestWebApplicationFactory
 {
+    public MsSqlServerContainerTest() : base(useDatabase: true)
+    {
+    }
+
     [Fact]
     public async Task ReadFromMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer!.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
@@ -19,7 +23,7 @@ public class MsSqlServerContainerTest : IntegrationTestWebApplicationFactory
     [Fact]
     public async Task WriteToMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer!.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();

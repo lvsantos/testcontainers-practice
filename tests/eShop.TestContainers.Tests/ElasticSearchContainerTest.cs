@@ -5,10 +5,14 @@ namespace eShop.TestContainers.Tests;
 
 public sealed class ElasticsearchContainerTest : IntegrationTestWebApplicationFactory
 {
+    public ElasticsearchContainerTest() : base(useElastic: true)
+    {
+    }
+
     [Fact]
     public async Task ReadFromElasticsearch()
     {
-        var settings = new ElasticsearchClientSettings(new Uri(_elasticSearchContainer.GetConnectionString()));
+        var settings = new ElasticsearchClientSettings(new Uri(_elasticSearchContainer!.GetConnectionString()));
         settings.ServerCertificateValidationCallback(CertificateValidations.AllowAll);
 
         var client = new ElasticsearchClient(settings);
@@ -20,7 +24,7 @@ public sealed class ElasticsearchContainerTest : IntegrationTestWebApplicationFa
     [Fact]
     public async Task WriteToElasticsearch()
     {
-        var settings = new ElasticsearchClientSettings(new Uri(_elasticSearchContainer.GetConnectionString()));
+        var settings = new ElasticsearchClientSettings(new Uri(_elasticSearchContainer!.GetConnectionString()));
         settings.ServerCertificateValidationCallback(CertificateValidations.AllowAll);
 
         var client = new ElasticsearchClient(settings);
