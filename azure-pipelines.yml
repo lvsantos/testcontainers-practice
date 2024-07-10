@@ -19,9 +19,6 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build project'
 
-#- script: dotnet test --configuration $(buildConfiguration)
-#  displayName: 'Run tests'
-
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
