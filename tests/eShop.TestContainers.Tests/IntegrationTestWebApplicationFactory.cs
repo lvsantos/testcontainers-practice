@@ -43,32 +43,30 @@ public abstract class IntegrationTestWebApplicationFactory : WebApplicationFacto
         }
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        var tasks = new List<Task>();
         if (_dbContainer is not null)
-            tasks.Add(_dbContainer.StartAsync());
+            await _dbContainer.StartAsync();
         if (_cacheContainer is not null)
-            tasks.Add(_cacheContainer.StartAsync());
+            await _cacheContainer.StartAsync();
         if (_elasticSearchContainer is not null)
-            tasks.Add(_elasticSearchContainer.StartAsync());
+            await _elasticSearchContainer.StartAsync();
         if (_mongoDbContainer is not null)
-            tasks.Add(_mongoDbContainer.StartAsync());
+            await _mongoDbContainer.StartAsync();
 
-        return Task.WhenAll(tasks);
+        return;
     }
-    public new Task DisposeAsync()
+    public new async Task DisposeAsync()
     {
-        var tasks = new List<Task>();
         if (_dbContainer is not null)
-            tasks.Add(_dbContainer.DisposeAsync().AsTask());
+            await _dbContainer.StopAsync();
         if (_cacheContainer is not null)
-            tasks.Add(_cacheContainer.DisposeAsync().AsTask());
+            await _cacheContainer.StopAsync();
         if (_elasticSearchContainer is not null)
-            tasks.Add(_elasticSearchContainer.DisposeAsync().AsTask());
+            await _elasticSearchContainer.StopAsync();
         if (_mongoDbContainer is not null)
-            tasks.Add(_mongoDbContainer.DisposeAsync().AsTask());
+            await _mongoDbContainer.StopAsync();
 
-        return Task.WhenAll(tasks);
+        return;
     }
 }
