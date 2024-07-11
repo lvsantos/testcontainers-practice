@@ -3,7 +3,8 @@ using Testcontainers.MsSql;
 
 namespace eShop.TestContainers.Tests;
 
-public class MsSqlServerContainerTest : IAsyncLifetime
+
+public class SqlTest2 : IAsyncLifetime
 {
     public readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .Build();
@@ -17,21 +18,11 @@ public class MsSqlServerContainerTest : IAsyncLifetime
     {
         await _dbContainer.StartAsync();
     }
-}
-
-public class SqlTest : IClassFixture<MsSqlServerContainerTest>
-{
-    private readonly MsSqlServerContainerTest _fixture;
-
-    public SqlTest(MsSqlServerContainerTest fixture)
-    {
-        _fixture = fixture;
-    }
 
     [Fact]
     public async Task ReadFromMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_fixture._dbContainer.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
@@ -43,7 +34,7 @@ public class SqlTest : IClassFixture<MsSqlServerContainerTest>
     [Fact]
     public async Task WriteToMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_fixture._dbContainer.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
@@ -62,7 +53,7 @@ public class SqlTest : IClassFixture<MsSqlServerContainerTest>
     [Fact]
     public async Task Check()
     {
-        await using var connection = new SqlConnection(_fixture._dbContainer.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
