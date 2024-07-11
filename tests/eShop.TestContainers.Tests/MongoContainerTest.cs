@@ -1,12 +1,22 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Testcontainers.MongoDb;
 
 namespace eShop.TestContainers.Tests;
 
-public sealed class MongoContainerTest : IntegrationTestWebApplicationFactory
+public sealed class MongoContainerTest : IAsyncLifetime
 {
-    public MongoContainerTest() : base(useMongo: true)
+    private readonly MongoDbContainer _mongoDbContainer = new MongoDbBuilder()
+        .Build();
+
+    public async Task DisposeAsync()
     {
+        await _mongoDbContainer.DisposeAsync();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _mongoDbContainer.StartAsync();
     }
 
     [Fact]

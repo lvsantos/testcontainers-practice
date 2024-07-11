@@ -1,17 +1,27 @@
 ﻿using Microsoft.Data.SqlClient;
+using Testcontainers.MsSql;
 
 namespace eShop.TestContainers.Tests;
 
-public class MsSqlServerContainerTest : IntegrationTestWebApplicationFactory
+public class MsSqlServerContainerTest : IAsyncLifetime
 {
-    public MsSqlServerContainerTest() : base(useDatabase: true)
+    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
+        .Build();
+
+    public async Task DisposeAsync()
     {
+        await _dbContainer.DisposeAsync();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _dbContainer.StartAsync();
     }
 
     [Fact]
     public async Task ReadFromMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_dbContainer!.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
@@ -23,7 +33,7 @@ public class MsSqlServerContainerTest : IntegrationTestWebApplicationFactory
     [Fact]
     public async Task WriteToMsSqlDatabase()
     {
-        await using var connection = new SqlConnection(_dbContainer!.GetConnectionString());
+        await using var connection = new SqlConnection(_dbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         await using var command = connection.CreateCommand();
